@@ -13,7 +13,7 @@ class _bottomnavbarState extends State<bottomnavbar> {
   int selectedIndex = 0;
   final List<Widget> listbottomnavdata = [
     HomeScreen(),
-    marketdata(),
+    MarketDataPage(),
     HomeScreen(),
     HomeScreen(),
     HomeScreen(),
@@ -32,7 +32,7 @@ class _bottomnavbarState extends State<bottomnavbar> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: navstate,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.grey.shade900,
         unselectedItemColor: Colors.grey,
         selectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,
@@ -43,25 +43,26 @@ class _bottomnavbarState extends State<bottomnavbar> {
                 size: 25,
               ),
               label: "home"),
-          BottomNavigationBarItem(
+           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage("images/marketonclick2.png"),
-                size: 25,
+                size: 30,
               ),
+
               label: "markets"),
-          BottomNavigationBarItem(
+           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage("images/tradeonclick.png"),
                 size: 30,
               ),
               label: "Trades"),
-          BottomNavigationBarItem(
+           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage("images/featuresonclick.png"),
                 size: 30,
               ),
               label: "Feature"),
-          BottomNavigationBarItem(
+           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage("images/walletonclick.png"),
                 size: 30,

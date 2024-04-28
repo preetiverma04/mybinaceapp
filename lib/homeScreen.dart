@@ -1,6 +1,6 @@
 import 'package:flutter/Material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:myapplication2/bottombar.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -340,114 +340,135 @@ Widget spotdropdown(double width, double height, String? selectedOption,
   );
 }
 
+
 final List<Map<String, String>> data = [
   {
     "text1": "MEME ",
     "text2": "/USDT",
-    "text3": "5X",
+    "text3": "5x",
     "price": "0.02937",
-    "percentage": "0.00%"
+    "percentage": "0.00%",
+    "color": "red",
   },
   {
     "text1": "TLM",
     "text2": "/USDT",
     "text3": "5X",
     "price": "0.01746",
-    "percentage": "-14.1%"
+    "percentage": "-14.1%",
+    "color": "green",
   },
   {
     "text1": "XVG",
-    "text2": "USDT",
-    "text3": "5X",
+    "text2": "/USDT",
+    "text3": "5x",
     "price": "0.006066",
-    "percentage": "0.00%"
+    "percentage": "0.00%",
+    "color": "red",
   },
   {
     "text1": "XRP",
-    "text2": "USDT",
-    "text3": "5X",
+    "text2": "/USDT",
+    "text3": "10x",
     "price": "0.5476",
-    "percentage": "0.00%"
+    "percentage": "0.00%",
+    "color": "green",
   },
   {
     "text1": "ADA",
-    "text2": "USDT",
-    "text3": "5X",
+    "text2": "/USDT",
+    "text3": "10x",
     "price": "0.5187",
-    "percentage": "0.00%"
+    "percentage": "0.00%",
+    "color": "red",
   },
   {
     "text1": "TRX",
-    "text2": "USDT",
-    "text3": "5X",
+    "text2": "/USDT",
+    "text3": "10x",
     "price": "0.11214",
-    "percentage": "0.00%"
+    "percentage": "0.00%",
+    "color": "green",
   },
 ];
 
 Widget relateddata(double width, double height) {
   return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        children: data.map((item) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: width * 0.1 / 5),
-                color: Colors.red,
-                child: Text(item["text1"]!,
-                    style: TextStyle(
-                        color: Colors.white, fontSize: width * 0.30 / 5)),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: width * 0.1 / 5),
-                child: Text(item["text2"]!,
-                    style: TextStyle(
-                        color: Colors.grey.shade300,
-                        fontSize: width * 0.25 / 5)),
-              ),
-              Container(
-                width: width * 0.4 / 5,
-                height: height * 0.15 / 5,
-                margin: EdgeInsets.only(left: width * 0.1 / 5),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade700,
-                ),
-                child: Center(
-                  child: Text(item["text3"]!,
+    scrollDirection: Axis.vertical,
+    child: Column(
+      children: data.map((item) {
+        Color textColor;
+        if (item["color"] == "red") {
+          textColor = Colors.red;
+        } else if (item["color"] == "green") {
+          textColor = Colors.green;
+        } else {
+          textColor = Colors.red; // Default color
+        }
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: width * 1.8 / 5,
+              margin: EdgeInsets.only(left: width * 0.1 / 5),
+              child: Row(
+                children: [
+                  Text(item["text1"]!,
                       style: TextStyle(
-                          color: Colors.white, fontSize: width * 0.2 / 5)),
-                ),
+                          color: Colors.white, fontSize: width * 0.30 / 5)),
+                  SizedBox(width: 0.01/5,),
+                  Text(item["text2"]!,
+                      style: TextStyle(
+                          color: Colors.grey.shade600, fontSize: width * 0.22 / 5)),
+                ],
               ),
-              Container(
-                margin: EdgeInsets.only(left: width * 0.4 / 5),
-                child: Text(item["price"]!,
-                    style: const TextStyle(color: Colors.white)),
+            ),
+            // Container(
+            //   margin: EdgeInsets.only(left: width * 0.1 / 5),
+            //   child: Text(item["text2"]!,
+            //       style: TextStyle(
+            //           color: Colors.grey.shade300,
+            //           fontSize: width * 0.25 / 5)),
+            // ),
+            Container(
+              width: width * 0.5/ 5,
+              height: height * 0.15 / 5,
+
+              decoration: BoxDecoration(
+                color: Colors.grey.shade700,
               ),
-              Container(
-                width: width * 1.0 / 5,
-                height: height * 0.2 / 5,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                margin: EdgeInsets.only(left: width * 0.4 / 5),
-                child: Center(
-                  child: Text(item["percentage"]!,
-                      style: const TextStyle(color: Colors.white)),
-                ),
+              child: Center(
+                child: Text(item["text3"]!,
+                    style: TextStyle(
+                        color: Colors.white, fontSize: width * 0.2 / 5)),
               ),
-              Container(
-                height: height * 0.2 / 5,
-                margin: EdgeInsets.only(top: width * 0.2 / 5),
-              )
-            ],
-          );
-        }).toList(),
-      ));
+            ),
+            Container(
+              width: width*1.1/6,
+              margin: EdgeInsets.only(left: width * 0.3 / 5),
+              child: Text(item["price"]!,
+                  style: const TextStyle(color: Colors.white)),
+            ),
+            Container(
+              width: width * 1.0 / 5,
+              height: height * 0.2 / 5,
+              decoration: BoxDecoration(
+                color: textColor,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              margin: EdgeInsets.only(left: width * 0.2 / 5),
+              child: Center(
+                child: Text(item["percentage"]!,
+                    style:  TextStyle(color: Colors.white)),
+              ),
+            ),
+            Container(
+              height: height * 0.2 / 5,
+              margin: EdgeInsets.only(top: width * 0.2 / 5),
+            )
+          ],
+        );
+      }).toList(),
+    ),
+  );
 }
-//
-// Widget bottombar(BuildContext context, double width, double height) {
-//   var _currentvalue=0;
-//   return

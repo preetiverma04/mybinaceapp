@@ -62,63 +62,62 @@ class _create_AccountState extends State<create_Account> {
    {'hint_text': 'Email'},
    {'hint_text': 'Password'},
  ];
-  Widget createAccountField(double width, double height) {
-    return Column(
-      children: textFieldData.map((data) {
+ Widget createAccountField(double width, double height) {
+   return Column(
+     children: textFieldData.map((data) {
+       String hintText = data['hint_text'] ?? '';
+       bool isPassword = hintText == 'Password';
 
-        String hintText = data['hint_text'] ?? '';
-        return Container(
-          height: height * 0.6/ 5,
-          margin: EdgeInsets.symmetric(horizontal: 14.0),
-          child: TextField(
+       return Container(
+         height: height * 0.6 / 5,
+         margin: EdgeInsets.symmetric(horizontal: 14.0),
+         child: TextField(
            enabled: true,
-            style: TextStyle(color: Colors.white),
-            maxLines: 1,
-            decoration: InputDecoration(
-              hintText: hintText,
-              suffixIcon: hintText == 'Password'
-                  ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    visibility = !visibility;
-                  });
-
-                },
-                icon: Icon(
-                  visibility
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: Colors.white,
-                ),
-              ) : null,
-
-              hintStyle: TextStyle(
-                color: Colors.white,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+           style: TextStyle(color: Colors.white),
+           maxLines: 1,
+           obscureText: isPassword && !visibility,
+           decoration: InputDecoration(
+             hintText: hintText,
+             suffixIcon: isPassword
+                 ? IconButton(
+               onPressed: () {
+                 setState(() {
+                   visibility = !visibility;
+                 });
+               },
+               icon: Icon(
+                 visibility
+                     ? Icons.visibility
+                     : Icons.visibility_off,
+                 color: Colors.white,
+               ),
+             )
+                 : null,
+             hintStyle: TextStyle(
+               color: Colors.white,
+             ),
+             focusedBorder: OutlineInputBorder(
+               borderSide: BorderSide(
                  width: 2.0,
-                  color: Colors.white,
-                ),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
+                 color: Colors.white,
+               ),
+               borderRadius: BorderRadius.circular(20.0),
+             ),
+             border: OutlineInputBorder(
+               borderRadius: BorderRadius.circular(20.0),
+               borderSide: BorderSide(
+                 color: Colors.white,
+                 width: 2.0,
+               ),
+             ),
+           ),
+         ),
+       );
+     }).toList(),
+   );
+ }
 
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-                borderSide: BorderSide(
-                  color: Colors.white,
-                  width:2.0,
-                ),
-
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-}
-Widget chooseImage(double width,double height){
+ Widget chooseImage(double width,double height){
   return Column(
     children: [
       Container(
@@ -157,4 +156,4 @@ Widget getStartedButton(double width,double height, BuildContext context){
     ),
     ),
   );
-}
+}}

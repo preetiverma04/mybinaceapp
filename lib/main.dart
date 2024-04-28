@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapplication2/bottombar.dart';
+
 import 'package:myapplication2/createAccount.dart';
 import 'package:myapplication2/homeScreen.dart';
 import 'package:myapplication2/login_screen.dart';
@@ -7,7 +7,7 @@ import 'package:myapplication2/otp.dart';
 import 'otp2Screen.dart';
 import 'splashScreen.dart';
 import 'markets.dart';
-import'bottombar.dart';
+
 
 void main() {
   runApp( MyApp());
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         'otp':(context)=>Otp(),
         'otp2Screen':(context)=>Otp2(),
         'homeScreen':(context)=>HomeScreen(),
-        // 'markets':(context)=>marketdata(),
+        'markets':(context)=>MarketDataPage(),
       }
 
 
