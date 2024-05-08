@@ -20,106 +20,112 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.only(
-                  left: width * 0.1 / 5,
-                  right: width * 0.1 / 5,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: width * 0.4 / 5,
-                      decoration: BoxDecoration(
-                        color: Colors.yellow.shade800,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ImageIcon(
-                        const AssetImage("images/Binance_Logo.png"),
-                        size: width * 0.4 / 5,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(
-                      width: width * 0.2 / 5,
-                    ),
-                    Expanded(
-                      child: Container(
-                        width: width * 1.0 / 5,
-                        height: height * 0.24 / 5,
+          child: Container(
+            margin: EdgeInsets.only(top: height*0.03/5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(
+                    left: width * 0.1 / 5,
+                    right: width * 0.1 / 5,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: width * 0.4 / 5,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.grey.shade700,
+                          color: Colors.yellow.shade800,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            isDense: true,
-                            fillColor: Colors.grey.shade700,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
+                        child: ImageIcon(
+                          const AssetImage("images/Binance_Logo.png"),
+                          size: width * 0.4 / 5,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * 0.2 / 5,
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: width * 1.0 / 5,
+                          height: height * 0.24 / 5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey.shade700,
+                          ),
+                          child: TextField(
+                            cursorColor: Colors.white,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+
+                              filled: true,
+                              isDense: true,
+                              fillColor: Colors.grey.shade700,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade800),
+                              ),
+                              hintText: "ETC",
+                              hintStyle:  TextStyle(color: Colors.grey),
+                              contentPadding: EdgeInsets.only(
+                                  left: width * 0.1 / 5, right: width * 0.1 / 5),
+                              prefixIcon: const Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              ),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  BorderSide(color: Colors.grey.shade800),
-                            ),
-                            hintText: "ETC",
-                            hintStyle: const TextStyle(color: Colors.white),
-                            contentPadding: EdgeInsets.only(
-                                left: width * 0.1 / 5, right: width * 0.1 / 5),
-                            prefixIcon: const Icon(
-                              Icons.search,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: width * 0.1 / 5),
+                        child: Row(
+                          children: [
+                            SizedBox(width: width * 0.13 / 5),
+                            Icon(
+                              Icons.center_focus_strong_sharp,
                               color: Colors.white,
+                              size: width * 0.24 / 5,
                             ),
-                          ),
+                            SizedBox(width: width * 0.13 / 5),
+                            Icon(Icons.notification_important,
+                                color: Colors.white, size: width * 0.24 / 5),
+                            SizedBox(width: width * 0.13 / 5),
+                            Icon(Icons.headphones,
+                                color: Colors.white, size: width * 0.24 / 5),
+                            SizedBox(width: width * 0.13 / 5),
+                            Icon(Icons.payments,
+                                color: Colors.white, size: width * 0.24 / 5),
+                          ],
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: width * 0.1 / 5),
-                      child: Row(
-                        children: [
-                          SizedBox(width: width * 0.13 / 5),
-                          Icon(
-                            Icons.center_focus_strong_sharp,
-                            color: Colors.white,
-                            size: width * 0.24 / 5,
-                          ),
-                          SizedBox(width: width * 0.13 / 5),
-                          Icon(Icons.notification_important,
-                              color: Colors.white, size: width * 0.24 / 5),
-                          SizedBox(width: width * 0.13 / 5),
-                          Icon(Icons.headphones,
-                              color: Colors.white, size: width * 0.24 / 5),
-                          SizedBox(width: width * 0.13 / 5),
-                          Icon(Icons.payments,
-                              color: Colors.white, size: width * 0.24 / 5),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: height * 0.2 / 5,
-              ),
-              balanceText(width, height),
-              SizedBox(
-                height: height * 0.2 / 5,
-              ),
-              spotdropdown(width, height, selectedOption, (value) {
-                setState(() {
-                  selectedOption = value;
-                });
-              }),
-              SizedBox(
-                height: height * 0.2 / 5,
-              ),
-              relateddata(width, height),
-            ],
+                SizedBox(
+                  height: height * 0.2 / 5,
+                ),
+                balanceText(width, height),
+                SizedBox(
+                  height: height * 0.2 / 5,
+                ),
+                spotdropdown(width, height, selectedOption, (value) {
+                  setState(() {
+                    selectedOption = value;
+                  });
+                }),
+                SizedBox(
+                  height: height * 0.2 / 5,
+                ),
+                relateddata(width, height),
+              ],
+            ),
           ),
         ),
       ),

@@ -40,13 +40,13 @@ class Otp extends StatelessWidget {
     return Center(
       child: Container(
         margin: EdgeInsets.only(left: width * 0.1 / 5, top: height * 0.2 / 5),
-        width: width * 3.7 / 5,
+        width: width * 4.4 / 5,
         height: height * 1.8 / 5,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100.0),
-          color: Colors.red,
+          // borderRadius: BorderRadius.circular(200.0),
+
           image: DecorationImage(
-              image: AssetImage("images/otpverify.png"), fit: BoxFit.cover),
+              image: AssetImage("images/lock.png"), fit: BoxFit.cover),
         ),
       ),
     );
@@ -79,16 +79,29 @@ Widget phoneNumberTextField(double width, double height) {
   return Container(
     margin: EdgeInsets.only(left : width * 0.3 / 5,right : width * 0.3 / 5,top: height*0.2/5),
     child: TextField(
+
       style: TextStyle(color: Colors.white),
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        hintText: "+91",
+
+
         hintStyle: TextStyle(color: Colors.white),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 1.0),
+        focusedBorder: OutlineInputBorder(
+               borderRadius: BorderRadius.circular(20.0),
+                 borderSide: BorderSide(
+                 width: 2.0,
+               color: Colors.white,
         ),
+
       ),
-    ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 2.0,
+          ),
+        ),
+    ),),
   );
 }
 Widget otpButton(double width,double height,BuildContext context){

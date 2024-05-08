@@ -72,11 +72,14 @@ class _create_AccountState extends State<create_Account> {
          height: height * 0.6 / 5,
          margin: EdgeInsets.symmetric(horizontal: 14.0),
          child: TextField(
+
+           cursorColor: Colors.white,
            enabled: true,
            style: TextStyle(color: Colors.white),
            maxLines: 1,
-           obscureText: isPassword && !visibility,
+           obscureText: isPassword && visibility,
            decoration: InputDecoration(
+
              hintText: hintText,
              suffixIcon: isPassword
                  ? IconButton(
@@ -90,6 +93,7 @@ class _create_AccountState extends State<create_Account> {
                      ? Icons.visibility
                      : Icons.visibility_off,
                  color: Colors.white,
+
                ),
              )
                  : null,

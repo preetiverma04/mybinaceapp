@@ -1,5 +1,134 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/Material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'Model.dart';
 
+class cryptoData extends StatefulWidget {
+  const cryptoData({super.key});
+
+  @override
+  State<cryptoData> createState() => _cryptoDataState();
+}
+
+class _cryptoDataState extends State<cryptoData> {
+
+  late Future<List<CryptoPricedata>> futuredata;
+
+  // double percentageChange(){
+  //   double currentPrice = double.parse(price);
+  //   double prevPrice = double.parse(prevClosePrice);
+  //   return ((currentPrice - prevPrice) / prevPrice) * 100;
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    futuredata = getData2();
+  }
+
+  Future<List<CryptoPricedata>> getData2() async {
+    var res = await http
+        .get(Uri.parse("https://api1.binance.com/api/v3/ticker/price"));
+    print("Response status code: ${res.statusCode}");
+    print(res);
+    print("Response body: ${res.body}");
+
+    if (res.statusCode == 200) {
+      List<dynamic> jsondata2 = json.decode(res.body);
+      List<CryptoPricedata> data = [];
+      for (var item in jsondata2) {
+        data.add(CryptoPricedata.fromJson(item));
+      }
+      return data;
+    } else {
+      return [];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width=MediaQuery.of(context).size.width;
+    final height=MediaQuery.of(context).size.height;
+    return Scaffold(
+
+      backgroundColor: Colors.black,
+      body: Column(
+
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: height*0.25/5),
+              child: searchCoinpairs(width,height)),
+
+          SizedBox(
+              height:height*0.8/5,child: TabBarText()),
+          SizedBox(height:height*0.4/5,child: headingData1(width,height)),
+          headingData2(),
+          Expanded(
+            child: FutureBuilder<List<CryptoPricedata>>(
+
+              future: futuredata,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      CryptoPricedata cryptopricedata1 = snapshot.data![index];
+                      return Container(
+                        width: width*0.5/5,
+                        height: height*0.26/5,
+                        color: Colors.black,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              child: Text(
+                                "${cryptopricedata1.symbol}",
+                                style: TextStyle(fontSize: 20.0,color: Colors.white),
+                              ),
+                            ),
+                            Container(
+
+                                child: Text(" ${cryptopricedata1.price}", style: TextStyle(fontSize: 14.0,color: Colors.white),
+                                  textAlign: TextAlign.center,)),
+                            Container(
+                              width: width*1.1/5,
+                              height: height*0.2/5,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "${cryptopricedata1.percentageChange().toStringAsFixed(1)}%"
+                                  , style: TextStyle(fontSize: 16.0,color: Colors.white),),
+                              ),
+                            ), // Display percentage change
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: Text('No data available'),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 class TabBarText extends StatefulWidget {
   const TabBarText({Key? key});
 
@@ -30,14 +159,16 @@ class _TabBarTextState extends State<TabBarText> {
                 child: Padding(
                   padding: EdgeInsets.only(right: width*0.1/5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Tab(
-                        child: Text(
-                          data,
-                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                      Container(
+                        margin: EdgeInsets.only(right: width * 0.1 / 5),
+                        child: Tab(
+                          child: Text(
+                            data,
+                            style: TextStyle(color: Colors.white, fontSize: 16.0),
 
+                          ),
                         ),
                       ),
                     ],
@@ -58,9 +189,9 @@ class _TabBarTextState extends State<TabBarText> {
                       margin:EdgeInsets.only(top: height*0.10/5),
 
                       child: Text(
-                          data,
-                          style: TextStyle(fontSize: 24.0, color: Colors.blue),
-                        ),
+                        data,
+                        style: TextStyle(fontSize: 24.0, color: Colors.blue),
+                      ),
                     ),
                   ],
                 );
@@ -72,281 +203,80 @@ class _TabBarTextState extends State<TabBarText> {
     );
   }
 }
+Widget searchCoinpairs(double width, double height) {
+  return Container(
+    width: width * 4.4 / 5,
+    height: height * 0.25 / 5,
+    margin: EdgeInsets.only(right: 0.2 / 5),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(14.0),
+    ),
+    child: Row(
 
-class MarketDataPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              searchCoinpairs(width, height),
-              SizedBox(
+      children: [
+        Expanded(
+          child: TextField(
 
-                width: width*4.8/5,
-                height: height*0.8/5,
-                child: TabBarText(),
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              filled: true,
+
+              focusColor: Colors.grey.shade900,
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade800),
+                borderRadius: BorderRadius.circular(14.0),
               ),
-              marketData(width, height),
-            ],
+
+              fillColor: Colors.grey.shade900,
+              hintText: "Search coins Pairs",
+              prefixIcon: Icon(Icons.search, color: Colors.white),
+              hintStyle: TextStyle(color: Colors.grey.shade600),
+              contentPadding: EdgeInsets.only(
+                left: width * 0.1 / 5,
+                right: width * 0.1 / 5,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14.0),
+                borderSide: BorderSide(
+                  color: Colors.white,
+                  width: width * 0.004 / 5,
+                ),
+              ),
+            ),
+            enabled: true,
+
           ),
         ),
-      ),
-    );
-  }
-
-  Widget searchCoinpairs(double width, double height) {
-    return Container(
-      width: width * 4.4 / 5,
-      height: height * 0.25 / 5,
-      margin: EdgeInsets.only(right: 0.2/5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14.0),
-      ),
-      child: Row(
-
-        children: [
-          Expanded(
-            child: TextField(
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                filled: true,
-                focusColor: Colors.grey.shade900,
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.shade800),
-                  borderRadius: BorderRadius.circular(14.0),
-                ),
-                fillColor: Colors.grey.shade900,
-                hintText: "Search coins Pairs",
-                prefixIcon: Icon(Icons.search, color: Colors.white),
-                hintStyle: TextStyle(color: Colors.white),
-                contentPadding: EdgeInsets.only(
-                  left: width * 0.1 / 5,
-                  right: width * 0.1 / 5,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                    width: width * 0.004 / 5,
-                  ),
-                ),
-              ),
-              enabled: true,
-            ),
-          ),
-          SizedBox(width: width * 0.4 / 5),
-          Icon(
-            Icons.more_horiz,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-final List<Map<String, String>> market_data = [
-  {
-    "text1": "XRP",
-    "text2": "/USDT",
-    "text3": "10x",
-    "price": "0.5476",
-    "percentage": "0.00%",
-    "color": "green",
-  },
-  {
-    "text1": "MEME ",
-    "text2": "/USDT",
-    "text3": "5x",
-    "price": "0.02937",
-    "percentage": "0.00%",
-    "color": "red",
-  },
-  {
-    "text1": "TLM",
-    "text2": "/USDT",
-    "text3": "5X",
-    "price": "0.01746",
-    "percentage": "-14.1%",
-    "color": "green",
-  },
-  {
-    "text1": "XVG",
-    "text2": "/USDT",
-    "text3": "5x",
-    "price": "0.006066",
-    "percentage": "0.00%",
-    "color": "red",
-  },
-  {
-    "text1": "XRP",
-    "text2": "/USDT",
-    "text3": "10x",
-    "price": "0.5476",
-    "percentage": "0.00%",
-    "color": "green",
-  },
-  {
-    "text1": "ADA",
-    "text2": "/USDT",
-    "text3": "10x",
-    "price": "0.5187",
-    "percentage": "0.00%",
-    "color": "red",
-  },
-  {
-    "text1": "TRX",
-    "text2": "/USDT",
-    "text3": "10x",
-    "price": "0.11214",
-    "percentage": "0.00%",
-    "color": "green",
-  },
-  {
-    "text1": "MEME ",
-    "text2": "/USDT",
-    "text3": "5x",
-    "price": "0.02937",
-    "percentage": "0.00%",
-    "color": "red",
-  },
-  {
-    "text1": "TLM",
-    "text2": "/USDT",
-    "text3": "5X",
-    "price": "0.01746",
-    "percentage": "-14.1%",
-    "color": "green",
-  },
-  {
-    "text1": "XVG",
-    "text2": "/USDT",
-    "text3": "5x",
-    "price": "0.006066",
-    "percentage": "0.00%",
-    "color": "red",
-  },
-  {
-    "text1": "XRP",
-    "text2": "/USDT",
-    "text3": "10x",
-    "price": "0.5476",
-    "percentage": "0.00%",
-    "color": "green",
-  },
-  {
-    "text1": "ADA",
-    "text2": "/USDT",
-    "text3": "10x",
-    "price": "0.5187",
-    "percentage": "0.00%",
-    "color": "red",
-  },
-  {
-    "text1": "TRX",
-    "text2": "/USDT",
-    "text3": "10x",
-    "price": "0.11214",
-    "percentage": "0.00%",
-    "color": "green",
-  },
-];
-
-Widget marketData(double width, double height) {
-  return SingleChildScrollView(
-    scrollDirection: Axis.vertical,
-    child: Container(
-      margin: EdgeInsets.only(top: height * 0.1 / 5),
-      child: Column(
-        children: market_data.map((item) {
-          Color textColor;
-          if (item["color"] == "red") {
-            textColor = Colors.red;
-          } else if (item["color"] == "green") {
-            textColor = Colors.green;
-          } else {
-            textColor = Colors.red; // Default color
-          }
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: width * 1.8 / 5,
-                margin: EdgeInsets.only(left: width * 0.1 / 5),
-                child: Row(
-                  children: [
-                    Text(
-                      item["text1"]!,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: width * 0.30 / 5,
-                      ),
-                    ),
-                    SizedBox(width: 0.01 / 5),
-                    Text(
-                      item["text2"]!,
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: width * 0.22 / 5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: width * 0.5 / 5,
-                height: height * 0.15 / 5,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade700,
-                ),
-                child: Center(
-                  child: Text(
-                    item["text3"]!,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: width * 0.2 / 5,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                width: width * 1.1 / 6,
-                margin: EdgeInsets.only(left: width * 0.3 / 5),
-                child: Text(
-                  item["price"]!,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-              Container(
-                width: width * 1.0 / 5,
-                height: height * 0.2 / 5,
-                decoration: BoxDecoration(
-                  color: textColor,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                margin: EdgeInsets.only(left: width * 0.2 / 5),
-                child: Center(
-                  child: Text(
-                    item["percentage"]!,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              Container(
-                height: height * 0.2 / 5,
-                margin: EdgeInsets.only(top: width * 0.2 / 5),
-              )
-            ],
-          );
-        }).toList(),
-      ),
+        SizedBox(width: width * 0.4 / 5),
+        Icon(
+          Icons.more_horiz,
+          color: Colors.white,
+        ),
+      ],
     ),
   );
 }
+Widget headingData1(double width,double height){
+  return Row(
+
+    children: [
+      SizedBox( width:width*0.6/5,child: Text("spot",style: TextStyle(color: Colors.grey.shade600,fontSize: 18.0),)),
+      SizedBox(width:width*0.9/5,child: Text("Futures",style: TextStyle(color: Colors.grey.shade600,fontSize: 18.0),)),
+      SizedBox(width:width*0.9/5,child: Text("Option",style: TextStyle(color: Colors.grey.shade600,fontSize: 18.0),)),
+    ],
+  );
+
+}
+Widget headingData2(){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text("Name/Vol",style: TextStyle(color: Colors.grey.shade700,fontSize: 16.0),),
+      Text("last Price",style: TextStyle(color: Colors.grey.shade700,fontSize: 16.0),),
+      Text("24h Chg%",style: TextStyle(color: Colors.grey.shade700,fontSize: 16.0),),
+    ],
+  );
+
+}
+
+
